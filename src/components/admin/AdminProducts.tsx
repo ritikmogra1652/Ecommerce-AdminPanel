@@ -9,8 +9,8 @@ import './AdminProducts.css';
 const AdminProducts = () => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [productsPerPage] = useState<number>(8);
+    // const [currentPage, setCurrentPage] = useState<number>(1);
+    // const [productsPerPage] = useState<number>(8);
     const [searchTerm, setSearchTerm] = useState<string>('');
 
     const navigate = useNavigate();

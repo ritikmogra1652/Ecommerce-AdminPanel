@@ -9,8 +9,9 @@ import './AdminProducts.css';
 const AdminProducts = () => {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    // const [currentPage, setCurrentPage] = useState<number>(1);
-    // const [productsPerPage] = useState<number>(8);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [productsPerPage] = useState<number>(8);
+    const [totalProducts, setTotalProducts] = useState<number>(0);
     const [searchTerm, setSearchTerm] = useState<string>('');
 
     const navigate = useNavigate();
@@ -32,6 +33,7 @@ const AdminProducts = () => {
 
             if (response.data.success) {
                 setProducts(response.data.data.products);
+                setTotalProducts(response.data.data.totalCount);
             }
         } catch (err) {
             console.error('No Product Found');
@@ -47,6 +49,13 @@ const AdminProducts = () => {
 
         return () => clearTimeout(delayDebounceFn);
     }, [currentPage, productsPerPage, searchTerm]);
+
+    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(totalProducts / productsPerPage); i++) {
+        pageNumbers.push(i);
+    }
 
     if (loading) {
         return <div className="admin-products-loading">Loading...</div>;
@@ -117,6 +126,18 @@ const AdminProducts = () => {
                     ))}
                 </tbody>
             </table>
+
+            <div className="homepage__pagination">
+                {pageNumbers.map(number => (
+                    <button
+                        key={number}
+                        onClick={() => paginate(number)}
+                        className={currentPage === number ? 'homepage__active' : ''}
+                    >
+                        {number}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 };
